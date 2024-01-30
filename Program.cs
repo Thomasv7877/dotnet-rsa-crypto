@@ -14,6 +14,7 @@ internal class Program
         var data = Encoding.UTF8.GetBytes(dataStr);
         var keyLength = 2048; // size in bits
         CryptoService.GenerateKeys(keyLength, out var publicKey, out var privateKey);
+        
         CryptoService.ExportKeys(privateKey, publicKey);
         CryptoService.ImportKeys(out var readPublicKey, out var readPrivateKey);
         // Console.WriteLine(readPrivateKey.ToString());
