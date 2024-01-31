@@ -23,21 +23,26 @@ public static void ExportKeys(RSAParameters privateKey, RSAParameters publicKey,
         rsa.ImportParameters(privateKey);
         // rsa.ImportParameters(publicKey);
 
-        string privateKeyXml = rsa.ToXmlString(includePrivateParameters: true);
-        File.WriteAllText("private.key", privateKeyXml);
+        //string privateKeyXml = rsa.ToXmlString(includePrivateParameters: true);
+        //File.WriteAllText("private.key", privateKeyXml);
+
+        var privateKeyPem = rsa.ExportRSAPrivateKey();
+        File.WriteAllBytes("private.pem", privateKeyPem);
         // string publicKeyXml = rsa.ToXmlString(includePrivateParameters: false);
         // File.WriteAllText("public.key", publicKeyXml);
     }
 }
 public static void ImportKeys(out RSAParameters publicKey, out RSAParameters privateKey, string path = ""){
     string privateKeyXml = File.ReadAllText("private.key");
+    ReadOnlySpan<byte> privateKeyPem = File.ReadAllBytes("private.pem");
     // string publicKeyXml = File.ReadAllText("public.key");
 
     using (var rsa = RSA.Create())
     {
         // rsa.KeySize = keyLength;
         // rsa.FromXmlString(publicKeyXml);
-        rsa.FromXmlString(privateKeyXml);
+        //rsa.FromXmlString(privateKeyXml);
+        rsa.ImportRSAPrivateKey(privateKeyPem, out var bytesRead);
         publicKey = rsa.ExportParameters(includePrivateParameters: false);
         privateKey = rsa.ExportParameters(includePrivateParameters: true);
     }
