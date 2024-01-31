@@ -25,6 +25,6 @@ internal class Program
 
         var decryptedData = CryptoService.Decrypt(encryptedData, readPrivateKey);
         var decryptedDataAsString = Encoding.UTF8.GetString(decryptedData);
-        Console.WriteLine(decryptedDataAsString);
+        Console.WriteLine("Decrypted Value:\n" + decryptedDataAsString);
     }
 }
